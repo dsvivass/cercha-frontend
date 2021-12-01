@@ -335,63 +335,13 @@ const drawReactionAndForces = (context, h_init, supportFactor, coords, factor, r
 
 }
 
-document.getElementById('btnSubmit').onclick = async function () {
-
+const processResults = (response) => {
+    console.log(response);
     const coords = calculateElementCoordinates()
     const canvas = document.getElementById('canvas'); 
     const context = canvas.getContext('2d'); // El canvas crea un lienzo de dibujo fijado que expone uno o mas contextos renderizados, 
                         // los cuales son usados para crear y manipular el contenido mostrado. Nos enfocaremos en renderizacion de contextos 2D.
-
-    // const url = 'localhost:3000'
-
-    // const request = await fetch('url')
-    // const response = await request.json()
-
-    const response = {
-        "forces": {
-            "1": {
-                "value": 111,
-                "condition": "T"
-            },
-            "2": {
-                "value": 222,
-                "condition": "C"
-            },
-            "3": {
-                "value": 333,
-                "condition": "T"
-            },
-            "4": {
-                "value": 444,
-                "condition": "T"
-            },
-            "5": {
-                "value": 555,
-                "condition": "C"
-            },
-            "6": {
-                "value": 666,
-                "condition": "T"
-            },
-            "7": {
-                "value": 777,
-                "condition": "T"
-            }
-        },
-
-        "reactions": {
-            "1": {
-                "x": 123,
-                "y": 321
-            },
-            "2": {
-                "x": 789,
-                "y": 987
-            }
-        }
-        
-    }
-
+                        
     context.scale(0.7, 0.7)
 
     // Factor de escala, para que a + b => 300px
@@ -405,5 +355,70 @@ document.getElementById('btnSubmit').onclick = async function () {
     drawTextForces(context, coords, h_init, factor, response['forces'])
     supportFactor = drawSupports(context, h_init, coords['7'][1][0] * factor)
     drawReactionAndForces(context, h_init, supportFactor, coords, factor, requestObject, response['reactions'])
+};
 
+document.getElementById('btnSubmit').onclick = function () {
+
+    // const url = 'localhost:3000'
+
+    // const request = await fetch('url')
+    // const response = await request.json()
+
+    fetch('http://localhost:3008/truss-solver', {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestObject),
+    })
+    .then((res) => res.json())
+    .then((res) => processResults(res));
+
+    // const response = {
+    //     "forces": {
+    //         "1": {
+    //             "value": 111,
+    //             "condition": "T"
+    //         },
+    //         "2": {
+    //             "value": 222,
+    //             "condition": "C"
+    //         },
+    //         "3": {
+    //             "value": 333,
+    //             "condition": "T"
+    //         },
+    //         "4": {
+    //             "value": 444,
+    //             "condition": "T"
+    //         },
+    //         "5": {
+    //             "value": 555,
+    //             "condition": "C"
+    //         },
+    //         "6": {
+    //             "value": 666,
+    //             "condition": "T"
+    //         },
+    //         "7": {
+    //             "value": 777,
+    //             "condition": "T"
+    //         }
+    //     },
+
+    //     "reactions": {
+    //         "1": {
+    //             "x": 123,
+    //             "y": 321
+    //         },
+    //         "2": {
+    //             "x": 789,
+    //             "y": 987
+    //         }
+    //     }
+        
+    // }
+    // processResults(response)
 }
+
