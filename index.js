@@ -114,7 +114,7 @@ const drawElementLines = (context, coords, h_init, factor, forces) => {
 
 const drawTextForces = (context, coords, h_init, factor, forces) => {
 
-    context.font = "12px Arial";
+    context.font = "18px Arial";
 
     Object.keys(coords).forEach(key => {
 
@@ -275,7 +275,7 @@ const drawReactionAndForces = (context, h_init, supportFactor, coords, factor, r
     // Texto de fuerzas y reacciones
 
     context.fillStyle = '#0a27a8'
-    context.font = "15px Arial"
+    context.font = "20px Arial"
 
     // Reaccion1y
     context.fillText(
@@ -339,6 +339,8 @@ const processResults = (response) => {
     console.log(response);
     const coords = calculateElementCoordinates()
     const canvas = document.getElementById('canvas'); 
+    canvas.width = window.innerWidth * 0.6;
+    canvas.height = window.innerHeight * 0.6;
     const context = canvas.getContext('2d'); // El canvas crea un lienzo de dibujo fijado que expone uno o mas contextos renderizados, 
                         // los cuales son usados para crear y manipular el contenido mostrado. Nos enfocaremos en renderizacion de contextos 2D.
                         
