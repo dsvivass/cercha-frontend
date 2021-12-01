@@ -18,13 +18,12 @@ const elasticity = document.getElementById('elasticity');
 
 const inputElements = [a, b, c, d, h, p1, p2, p3, area, elasticity];
 
-// Crear objeto para enviar al backend
-
 var requestObject = {
     dimensions: {},
     loads: {},
     properties: {}
 }
+
 
 // EVENTOS
 inputElements.forEach(element => {
@@ -143,6 +142,7 @@ const drawSupports = (context, h_init, coord_x) => {
 
     // Dibujo de circulo (Rodillo)
     context.beginPath();
+    // .arc(x: number, y: number, radius: number, startAngle: number, endAngle: number, counterclockwise?: boolean)
     context.arc(coord_x, h_init + h_init * supportFactor / 2, h_init * supportFactor / 2, 0, Math.PI * 2, true);
     context.fill();
 
@@ -338,8 +338,9 @@ const drawReactionAndForces = (context, h_init, supportFactor, coords, factor, r
 document.getElementById('btnSubmit').onclick = async function () {
 
     const coords = calculateElementCoordinates()
-    const canvas = document.getElementById('canvas');
-    const context = canvas.getContext('2d');
+    const canvas = document.getElementById('canvas'); 
+    const context = canvas.getContext('2d'); // El canvas crea un lienzo de dibujo fijado que expone uno o mas contextos renderizados, 
+                        // los cuales son usados para crear y manipular el contenido mostrado. Nos enfocaremos en renderizacion de contextos 2D.
 
     // const url = 'localhost:3000'
 
@@ -397,6 +398,7 @@ document.getElementById('btnSubmit').onclick = async function () {
     const factor = parseFloat(canvas.width) / (parseFloat(a.value) + parseFloat(b.value))
 
     // Altura vertical de partida, se utiliza para manejar el eje y negativo
+    // el canvas toma y+ hacia abajo y x+ hacia la derecha
     var h_init = parseFloat(h.value) * factor * 1.1
 
     drawElementLines(context, coords, h_init, factor, response['forces'])
