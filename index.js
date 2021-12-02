@@ -140,10 +140,12 @@ const drawSupports = (context, h_init, coord_x) => {
     context.closePath();
     context.fill();
 
-    // Dibujo de circulo (Rodillo)
+    // Dibujo de triangulo (Soporte articulado)
     context.beginPath();
-    // .arc(x: number, y: number, radius: number, startAngle: number, endAngle: number, counterclockwise?: boolean)
-    context.arc(coord_x, h_init + h_init * supportFactor / 2, h_init * supportFactor / 2, 0, Math.PI * 2, true);
+    context.moveTo(coord_x, h_init);
+    context.lineTo(coord_x + h_init * supportFactor, h_init + h_init * supportFactor);
+    context.lineTo(coord_x - h_init * supportFactor, h_init + h_init * supportFactor);
+    context.closePath();
     context.fill();
 
     return supportFactor // Para reutilizarlo al ubicar las flechas de reacción
@@ -338,6 +340,10 @@ const drawReactionAndForces = (context, h_init, supportFactor, coords, factor, r
 const processResults = (response) => {
     console.log(response);
     const coords = calculateElementCoordinates()
+
+    const img = document.querySelector('img');
+    img.style.display = 'none'; // ocultar imagen
+
     const canvas = document.getElementById('canvas'); 
     canvas.width = window.innerWidth * 0.6;
     canvas.height = window.innerHeight * 0.6;
